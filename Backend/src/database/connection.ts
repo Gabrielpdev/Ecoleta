@@ -1,12 +1,14 @@
 import knex from 'knex';
+require('dotenv').config({ path: './.env' })
+
 
 const connection = knex({
   client: 'mysql',
   connection: {
-    host : '127.0.0.1',
-    user : 'root',
-    password : '',
-    database : 'db_ecoleta'
+    host : process.env.DB_HOST,
+    user : process.env.DB_USER,
+    password : process.env.DB_PASS,
+    database : process.env.DB_NAME
   },
 });
 
