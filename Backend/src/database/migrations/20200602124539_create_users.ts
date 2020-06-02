@@ -7,6 +7,10 @@ export async function up(knex: Knex): Promise<any> {
     table.string('name').notNullable();
     table.string('email').notNullable();
     table.string('password').notNullable();
+    table.integer('role_id')
+      .unsigned()
+      .references('id')
+      .inTable('roles');
   })
 }
 
