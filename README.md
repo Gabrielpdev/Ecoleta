@@ -5,7 +5,7 @@ Este é um projeto de coleta de lixo. Construído com as tecnologias mais popula
 
 A aplicação em **Node.js** (backend) é uma **API REST** escrita em **Node.JS** que serve dados ao frontend e ao mobile.
 
-A aplicação em **ReactJS** (frontend) é os usuários cadastrados. Assim podendo adicionar pontos de coleta no mapa, que será visualizados por todo usuarios.
+A aplicação em **ReactJS** (frontend) é para os usuários cadastrados. Assim podendo adicionar pontos de coleta no mapa, que será visualizados por todo usuarios.
 
 A aplicação em **React Native** é para qualquer usuário, que verá os ponto de coleta mais próximos de sua localidade.
 
