@@ -6,6 +6,6 @@ export async function seed(knex: Knex): Promise<any> {
       { name: "AdminEcoleta" , 
         email: 'ecoleta@admin.com',
         password: await bcrypt.hash('123456', 8), 
-        role_id: 1 },
+        is_admin: true },
     ]);
 };

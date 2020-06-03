@@ -10,7 +10,7 @@ class ItensController {
       name,
       email,
       password,
-      office
+      is_admin
     } = request.body;
 
     const schema = Yup.object().shape({
@@ -19,7 +19,7 @@ class ItensController {
         .email()
         .required(),
       password: Yup.string().required(),
-      office: Yup.number().required(),
+      is_admin: Yup.boolean().required(),
     });
 
     if (!(await schema.isValid(request.body))) {
@@ -41,17 +41,13 @@ class ItensController {
     const user = {
       name,
       email,
-      password
+      password,
+      is_admin
     }
     
-    await knex('users').insert({...user, office_id: office})
+    const userId = await knex('users').insert(user)
 
-    const ofice = await knex('offices')
-      .where('id', office)
-      .select('name')
-      .first();
-    
-    return response.json({...user , office: ofice});
+    return response.json({id:userId[0],...user});
   }
 }
 

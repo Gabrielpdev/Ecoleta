@@ -10,11 +10,11 @@ export default async (req:Request, res:Response, next:NextFunction) => {
   const [, token] = authheader.split(' ');
   const decoded = await promisify(jwt.verify)(token, authConfig.secret);
   
-  const {office_id} = await knex('users')
+  const {is_admin} = await knex('users')
   .where('id', decoded.id)
   .first()
 
-  if(office_id !== 1){
+  if(is_admin !== 1){
     return res.status(401).json({ error: 'Whitout permission' });
   }
 
