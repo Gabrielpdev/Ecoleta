@@ -22,8 +22,8 @@ routes.get('/itens',itemController.index);
 routes.get('/points/:id',pointController.show );
 routes.get('/points',pointController.index );
 
-routes.use(authMiddleware);
 routes.post('/points', pointController.create );
+routes.use(authMiddleware);
 
 routes.post('/users', permissionMiddleware,userController.create);
 
