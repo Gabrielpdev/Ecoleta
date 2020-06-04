@@ -1,11 +1,32 @@
-#page-create-point {
+import styled from 'styled-components';
+import { Map } from 'react-leaflet';
+
+interface YourProps {
+  visible: boolean
+}
+
+export const Container = styled.div`
+
   width: 100%;
   max-width: 1100px;
 
   margin: 0 auto;
+
+button {
+  border:0;
+  color: #000;
+  font-size: 20px;
+  display: flex;
+  align-items:center;
+  justify-content: center;
+  padding: 5px;
 }
 
-#page-create-point header {
+svg {
+  margin-left: 10px;
+}
+
+header {
   margin-top: 48px;
 
   display: flex;
@@ -13,7 +34,7 @@
   align-items: center;
 }
 
-#page-create-point header a {
+header a {
   color: var(--title-color);
   font-weight: bold;
   text-decoration: none;
@@ -22,12 +43,12 @@
   align-items: center;
 }
 
-#page-create-point header a svg {
+header a svg {
   margin-right: 16px;
   color: var(--primary-color);
 }
 
-#page-create-point form {
+form {
   margin: 80px auto;
   padding: 64px;
   max-width: 730px;
@@ -38,17 +59,17 @@
   flex-direction: column;
 }
 
-#page-create-point form h1 {
+form h1 {
   font-size: 36px;
 }
 
-#page-create-point form fieldset {
+form fieldset {
   margin-top: 64px;
   min-inline-size: auto;
   border: 0;
 }
 
-#page-create-point form legend {
+form legend {
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -56,22 +77,22 @@
   margin-bottom: 40px;
 }
 
-#page-create-point form legend h2 {
+form legend h2 {
   font-size: 24px;
 }
 
-#page-create-point form legend span {
+form legend span {
   font-size: 14px;
   font-weight: normal;
   color: var(--text-color);
 }
 
-#page-create-point form .field-group {
+form .field-group {
   flex: 1;
   display: flex;
 }
 
-#page-create-point form .field {
+form .field {
   flex: 1;
 
   display: flex;
@@ -79,9 +100,9 @@
   margin-bottom: 24px;
 }
 
-#page-create-point form .field input[type=text],
-#page-create-point form .field input[type=email],
-#page-create-point form .field input[type=number] {
+form .field input[type=text],
+form .field input[type=email],
+form .field input[type=number] {
   flex: 1;
   background: #F0F0F5;
   border-radius: 8px;
@@ -91,7 +112,7 @@
   color: #6C6C80;
 }
 
-#page-create-point form .field select {
+form .field select {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -104,48 +125,48 @@
   color: #6C6C80;
 }
 
-#page-create-point form .field input::placeholder {
+form .field input::placeholder {
   color: #A0A0B2;
 }
 
-#page-create-point form .field label {
+form .field label {
   font-size: 14px;
   margin-bottom: 8px;
 }
 
-#page-create-point form .field :disabled {
+form .field :disabled {
   cursor: not-allowed;
 }
 
-#page-create-point form .field-group .field + .field {
+form .field-group .field + .field {
   margin-left: 24px;
 }
 
-#page-create-point form .field-group input + input {
+form .field-group input + input {
   margin-left: 24px;
 }
 
-#page-create-point form .field-check {
+form .field-check {
   flex-direction: row;
   align-items: center;
 }
 
-#page-create-point form .field-check input[type=checkbox] {
+form .field-check input[type=checkbox] {
   background: #F0F0F5;
 }
 
-#page-create-point form .field-check label {
+form .field-check label {
   margin: 0 0 0 8px;
 }
 
-#page-create-point form .leaflet-container {
+form .leaflet-container {
   width: 100%;
   height: 350px;
   border-radius: 8px;
   margin-bottom: 24px;
 }
 
-#page-create-point form button {
+form button {
   width: 260px;
   height: 56px;
   background: var(--primary-color);
@@ -160,7 +181,7 @@
   cursor: pointer;
 }
 
-#page-create-point form button:hover {
+form button:hover {
   background: #2FB86E;
 }
 
@@ -201,3 +222,31 @@
   background: #E1FAEC;
   border: 2px solid #34CB79;
 }
+
+`;
+
+export const Mapa = styled(Map)`
+    visibility: ${(props: YourProps) => (props.visible ? 'visible' : 'hidden')};
+`;
+
+export const Concluido = styled.div`
+ visibility: ${(props: YourProps) => (props.visible ? 'visible' : 'hidden')};
+
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  color: #FFF;
+  font-weight: bold;
+  font-size: 40px;
+
+  background: #000;
+
+`;
