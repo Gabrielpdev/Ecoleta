@@ -7,6 +7,10 @@ class PointsController {
 
     const parsedItens = String(itens).split(',').map( item => Number(item.trim()));
 
+    if(!itens ){
+      return;
+    }
+
     const points = await knex('points')
       .join('points_itens', 'points.id', '=', 'points_itens.point_id')
       .whereIn('points_itens.item_id', parsedItens)
