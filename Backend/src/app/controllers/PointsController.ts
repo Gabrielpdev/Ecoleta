@@ -11,13 +11,19 @@ class PointsController {
         const point = await knex('points')
         .distinct();
 
+        
+
         const points = []
         for (var i = 0; i < point.length; i++) {
           const items = await knex('itens')
             .join('points_itens', 'itens.id', '=', 'points_itens.item_id')
             .where('points_itens.point_id', point[i].id)
             .select('itens.title');
-          points.push({point: point[i], itens: items})
+
+          points.push({
+            image_url: `http://192.168.0.101:3333/uploads/${point[i].image}`, 
+            point: point[i], 
+            itens: items})
           
         }
 
@@ -50,12 +56,17 @@ class PointsController {
       return response.status(400).json({error: { message: "Point not found."}})
     }
 
+    const serializedPoints = {
+      ...point,
+      image_url: `http://192.168.0.101:3333/uploads/${point.image}`
+    }
+
     const itens = await knex('itens')
       .join('points_itens', 'itens.id', '=', 'points_itens.item_id')
       .where('points_itens.point_id', id)
       .select('itens.title');
 
-    return response.json({point, itens});
+    return response.json({point: serializedPoints, itens});
   }
 
   async create (request:Request, response:Response )  {
@@ -74,7 +85,7 @@ class PointsController {
     const trx = await knex.transaction();
 
     const point = {
-      image: 'https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=40',
+      image: request.file.filename,
       name,
       email,
       whatsapp,
@@ -88,12 +99,16 @@ class PointsController {
 
     const point_id = insertedIds[0];
 
-    const pointItens = itens.map( (item_id: number) => {
-      return {
-        item_id,
-        point_id,
-      }
-    })
+    const pointItens = itens
+      .split(',')
+      .map((item:String) => Number(item.trim()))
+      .map((item_id: number) => {
+    
+        return {
+          item_id,
+          point_id,
+        }
+      })
 
     await trx('points_itens').insert(pointItens);
     await trx.commit();

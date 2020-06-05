@@ -7,7 +7,6 @@
 import React, {
   useEffect, useState, ChangeEvent, FormEvent,
 } from 'react';
-import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Marker, TileLayer } from 'react-leaflet';
 import { LeafletMouseEvent } from 'leaflet';
@@ -17,8 +16,9 @@ import { IoMdCheckmarkCircleOutline } from 'react-icons/io';
 import axios from 'axios';
 import api from '../../services/api';
 
+import Dropzone from '../../components/Dropzone';
+
 import { Container, Concluido, Mapa } from './styles';
-import { signOut } from '../../store/modules/auth/actions';
 
 import logo from '../../assets/logo.svg';
 
@@ -45,19 +45,19 @@ const CreatePoint = () => {
     whatsapp: '',
   });
 
-  const [ufs, setUfs] = useState<string[]>([]);
-  const [selectedUf, setselectedUf] = useState('0');
-  const [citys, setCitys] = useState<string[]>([]);
-  const [selectedCity, setselectedCity] = useState('0');
-
   const [position, setPosition] = useState<[number, number]>([0, 0]);
 
-  const [itenSelected, setItensSelected] = useState<number[]>([]);
+  const [ufs, setUfs] = useState<string[]>([]);
+  const [citys, setCitys] = useState<string[]>([]);
+
+  const [selectedUf, setselectedUf] = useState('0');
+  const [selectedCity, setselectedCity] = useState('0');
+  const [selectedItens, setSelectedItens] = useState<number[]>([]);
+  const [selectedFile, setSelectedFile] = useState<File>();
 
   const [messageFinish, setMessageFinish] = useState(true);
 
   const history = useHistory();
-  const dispatch = useDispatch();
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((position) => {
@@ -120,19 +120,15 @@ const CreatePoint = () => {
   }
 
   function handleSelectItem(id: number) {
-    const alreadySelected = itenSelected.findIndex((item) => item === id);
+    const alreadySelected = selectedItens.findIndex((item) => item === id);
 
     if (alreadySelected >= 0) {
-      const filteredItens = itenSelected.filter((item) => item !== id);
+      const filteredItens = selectedItens.filter((item) => item !== id);
 
-      setItensSelected(filteredItens);
+      setSelectedItens(filteredItens);
     } else {
-      setItensSelected([...itenSelected, id]);
+      setSelectedItens([...selectedItens, id]);
     }
-  }
-
-  function handleLogOut() {
-    history.push('/dashboard');
   }
 
   async function handleSubmit(event: FormEvent) {
@@ -142,18 +138,22 @@ const CreatePoint = () => {
     const uf = selectedUf;
     const city = selectedCity;
     const [latitude, longitude] = position;
-    const itens = itenSelected;
+    const itens = selectedItens;
 
-    const data = {
-      name,
-      email,
-      whatsapp,
-      uf,
-      city,
-      latitude,
-      longitude,
-      itens,
-    };
+    const data = new FormData();
+
+    data.append('name', name);
+    data.append('email', email);
+    data.append('whatsapp', whatsapp);
+    data.append('uf', uf);
+    data.append('city', city);
+    data.append('latitude', String(latitude));
+    data.append('longitude', String(longitude));
+    data.append('itens', itens.join(','));
+
+    if (selectedFile) {
+      data.append('image', selectedFile);
+    }
 
     await api.post('points', data);
 
@@ -168,7 +168,7 @@ const CreatePoint = () => {
       <header>
         <img src={logo} alt="ecoleta" />
 
-        <button type="button" onClick={handleLogOut}>
+        <button type="button" onClick={() => history.push('/dashboard')}>
           Voltar para a Home
           <FiLogOut color="#2FB86E" size={30} />
         </button>
@@ -182,6 +182,8 @@ const CreatePoint = () => {
           {' '}
           ponto de coleta
         </h1>
+
+        <Dropzone onFileUploaded={setSelectedFile} />
 
         <fieldset>
           <legend>
@@ -280,7 +282,7 @@ const CreatePoint = () => {
                 <li
                   key={item.id}
                   onClick={() => handleSelectItem(item.id)}
-                  className={itenSelected.includes(item.id) ? 'selected' : ''}
+                  className={selectedItens.includes(item.id) ? 'selected' : ''}
                 >
                   <img src={item.image_url} alt={item.title} />
                   <span>{item.title}</span>
