@@ -132,7 +132,7 @@ const CreatePoint = () => {
   }
 
   function handleLogOut() {
-    dispatch(signOut());
+    history.push('/dashboard');
   }
 
   async function handleSubmit(event: FormEvent) {

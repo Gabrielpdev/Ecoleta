@@ -4,22 +4,41 @@ import knex from '../../database/connection';
 class PointsController {
   async index(request: Request , response: Response){
     const { city, uf, itens } = request.query;
+    
+    if(!itens){
+      if(!itens && !uf && !city){
 
-    const parsedItens = String(itens).split(',').map( item => Number(item.trim()));
+        const point = await knex('points')
+        .distinct();
 
-    if(!itens ){
-      return;
-    }
+        const points = []
+        for (var i = 0; i < point.length; i++) {
+          const items = await knex('itens')
+            .join('points_itens', 'itens.id', '=', 'points_itens.item_id')
+            .where('points_itens.point_id', point[i].id)
+            .select('itens.title');
+          points.push({point: point[i], itens: items})
+          
+        }
 
-    const points = await knex('points')
+        return response.json(points);
+
+      }else{
+        return response.json([]);
+      }
+    }else{
+      const parsedItens = String(itens).split(',').map( item => Number(item.trim()));
+      
+      const points = await knex('points')
       .join('points_itens', 'points.id', '=', 'points_itens.point_id')
       .whereIn('points_itens.item_id', parsedItens)
       .where('city', String(city))
       .where('uf', String(uf))
       .distinct()
       .select('points.*')
-
+      
       return response.json(points)
+    }
   }
 
   async show (request: Request, response: Response){

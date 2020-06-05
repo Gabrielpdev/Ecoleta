@@ -27,7 +27,7 @@ export function* signIn({ payload }: ReturnType<typeof signInRequest>) {
 
     yield put(signInSuccess(response.data));
 
-    history.push('/create-point');
+    history.push('/dashboard');
   } catch (err) {
     toast.error('Usuário não está cadastrado');
     yield put(signFailure());
