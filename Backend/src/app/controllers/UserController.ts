@@ -6,9 +6,22 @@ import bcrypt from 'bcryptjs';
 class UserController {
   async index (request: Request, response: Response) {
     
-    const data = await knex.select('name', 'email', 'is_admin').from('users')
+    const data = await knex.select('id','name', 'email', 'is_admin').from('users')
 
     return response.json(data);
+  }
+
+  async show (request: Request, response: Response) {
+
+    const { id } = request.params;
+
+    const user = await knex.select('id','name', 'email', 'is_admin').from('users').where('id', id).first();
+
+    if(!user){
+      return response.status(400).json({error: { message: "Point not found."}})
+    }
+
+    return response.json(user);
   }
 
   async create (request: Request, response: Response) {
@@ -24,8 +37,11 @@ class UserController {
       email: Yup.string()
         .email()
         .required(),
-      password: Yup.string().required(),
       is_admin: Yup.boolean().required(),
+      password: Yup.string().required(),
+      confirmPassword: Yup.string().when('password', (password: string, field: any) =>
+        password ? field.required().oneOf([Yup.ref('password')]) : field
+      ),
     });
 
     if (!(await schema.isValid(request.body))) {
@@ -110,10 +126,11 @@ class UserController {
       password
     }
     
-    await knex('users').where('id', id).update(data)
+    await knex('users').where({id: id}).update(data)
 
-    return response.json({ message: 'User updated'});
-  
+    const res = await knex.select('id','name', 'email', 'is_admin').from('users').where('id', id).first();
+
+    return response.json(res);
 
   }
 

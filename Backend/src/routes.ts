@@ -36,7 +36,7 @@ routes.post(
       email: Joi.string().required(),
       whatsapp: Joi.number().required(),
       latitude: Joi.number().required(),
-      lognitude: Joi.number().required(),
+      longitude: Joi.number().required(),
       city: Joi.string().required(),
       uf: Joi.string().max(2).required(),
       itens: Joi.string().required(),
@@ -47,25 +47,14 @@ routes.post(
   authMiddleware,
   pointController.create 
    );
-   
-routes.put('/users/:id', 
-  authMiddleware,
-  userController.update);
-   
-routes.post('/users', 
-  authMiddleware, 
-  permissionMiddleware,
-  userController.create);
 
-routes.delete('/users/:id', 
-  authMiddleware,
-  permissionMiddleware,
-  userController.destroy);
-
-routes.get('/users/', 
-  authMiddleware,
-  permissionMiddleware,
-  userController.index);
+routes.delete('/points/:id',authMiddleware, permissionMiddleware, pointController.destroy);
+   
+routes.put('/users/:id',authMiddleware,userController.update);
+routes.post('/users', authMiddleware, permissionMiddleware,userController.create);
+routes.delete('/users/:id',authMiddleware, permissionMiddleware, userController.destroy);
+routes.get('/users', authMiddleware,permissionMiddleware, userController.index);
+routes.get('/users/:id', authMiddleware,permissionMiddleware,userController.show);
 
 export default routes;
 

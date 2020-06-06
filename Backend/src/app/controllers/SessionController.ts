@@ -31,13 +31,14 @@ class SessionController {
       return res.status(401).json({ error: 'Password does not corect' });
     }
 
-    const { id, name } = user;
+    const { id, name, is_admin } = user;
 
     return res.json({
       user: {
         id,
         email,
         name,
+        is_admin,
       },
       token: jwt.sign({ id }, authConfig.secret, {
         expiresIn: authConfig.expiresIn,

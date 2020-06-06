@@ -10,17 +10,18 @@ import React, {
 import { useHistory } from 'react-router-dom';
 import { Marker, TileLayer } from 'react-leaflet';
 import { LeafletMouseEvent } from 'leaflet';
-import { FiLogOut } from 'react-icons/fi';
+import { FiArrowLeft } from 'react-icons/fi';
 import { IoMdCheckmarkCircleOutline } from 'react-icons/io';
 
 import axios from 'axios';
 import api from '../../services/api';
 
+import Header from '../../components/Header';
 import Dropzone from '../../components/Dropzone';
 
 import { Container, Concluido, Mapa } from './styles';
+import { store } from '../../store';
 
-import logo from '../../assets/logo.svg';
 
 interface Item {
   id: number,
@@ -37,6 +38,9 @@ interface IBGECityResponse{
 }
 
 const CreatePoint = () => {
+  const { profile } = store.getState().user;
+  const { token } = store.getState().auth;
+
   const [itens, setItens] = useState<Item[]>([]);
 
   const [formData, setFormData] = useState({
@@ -58,6 +62,14 @@ const CreatePoint = () => {
   const [messageFinish, setMessageFinish] = useState(true);
 
   const history = useHistory();
+
+  useEffect(() => {
+    async function setToken() {
+      await (api.defaults.headers.Authorization = `Bearer ${token} `);
+    }
+
+    setToken();
+  }, [token]);
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((position) => {
@@ -157,30 +169,25 @@ const CreatePoint = () => {
 
     await api.post('points', data);
 
+
     setMessageFinish(false);
 
-    setTimeout(() => history.push('/'), 3000);
+    setTimeout(() => history.push('/dashboard'), 3000);
   }
 
 
   return (
     <Container>
-      <header>
-        <img src={logo} alt="ecoleta" />
+      <Header profile={profile} />
 
-        <button type="button" onClick={() => history.push('/dashboard')}>
-          Voltar para a Home
-          <FiLogOut color="#2FB86E" size={30} />
-        </button>
-      </header>
 
       <form onSubmit={handleSubmit}>
+        <button type="button" className="back" onClick={() => history.push('/dashboard')}>
+          <FiArrowLeft color="#2FB86E" size={25} />
+          Voltar
+        </button>
         <h1>
-          Cadastro do
-          {' '}
-          <br />
-          {' '}
-          ponto de coleta
+          Cadastro do ponto de coleta
         </h1>
 
         <Dropzone onFileUploaded={setSelectedFile} />

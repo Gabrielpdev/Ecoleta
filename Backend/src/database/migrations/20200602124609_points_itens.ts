@@ -9,13 +9,17 @@ export async function up(knex: Knex): Promise<any> {
       .unsigned()
       .notNullable()
       .references('id')
-      .inTable('points');
+      .inTable('points')
+      .onDelete('CASCADE')
+      .onUpdate('CASCADE');
 
     table.integer('item_id')
       .unsigned()
       .notNullable()
       .references('id')
-      .inTable('itens');
+      .inTable('itens')
+      .onDelete('CASCADE')
+      .onUpdate('CASCADE');
   })
 }
 

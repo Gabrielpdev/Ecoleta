@@ -27,6 +27,7 @@ export const Container = styled.div`
     svg {
       margin-right: 10px;
     }
+
     &:hover {
       background: #2FB86E;
     }
@@ -34,11 +35,10 @@ export const Container = styled.div`
 `;
 
 export const Content = styled.div`
-
   background: #fff;
   border: 2px solid #34CB79;
 
-  border-radius: 50px;
+  border-radius: 20px;
   margin: 20px auto 0 auto;
 
   width: 80%;
@@ -51,7 +51,7 @@ export const Content = styled.div`
 
   color: #322153;
 
-  cursor: pointer;
+  cursor:pointer;
 
   & + & {
     margin-top: 25px;
@@ -62,29 +62,12 @@ export const Content = styled.div`
   }
 
   &:hover{
-    opacity: 0.7;
-  }
-
-  div.image {
-    display:flex;
-    align-content:center;
-    justify-content:center;
-
-    padding: 20px;
-
-    img{
-    margin: auto;
-    width: 150px;
-    height:150px;
-
-    border-radius: 75px;
-    }
+    opacity: 0.75;
   }
 
   div.description {
-    width: 50%;
+    margin-left: 40px;
     display:flex;
-    margin-left: 0;
     align-content:center;
     flex-direction: column;
     padding: 20px;
@@ -93,23 +76,22 @@ export const Content = styled.div`
       font-size: 33px;
     }
 
-    >text {
+    >span {
       font-weight:bold;
       font-size: 18px;
     }
   }
 
-  div.itens {
-
+  div.permition {
+    background: #E1FAEC;
+    border: 2px solid #34CB79;
     border-radius:30px;
 
-    width: 30%;
-    height: 150px;
+    height: 60px;
+    margin-right: 40px;
 
     display:flex;
-    flex-direction: column;
-
-    margin-right: 10px;
+    align-items:center;
 
     padding: 20px;
     >li {

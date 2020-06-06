@@ -3,7 +3,7 @@ import {
   takeLatest, call, put, all,
 } from 'redux-saga/effects';
 import { toast } from 'react-toastify';
-import { AuthTypes, Authorization } from './types';
+import { AuthTypes } from './types';
 
 import api from '../../../services/api';
 import history from '../../../services/history';
@@ -19,8 +19,6 @@ export function* signIn({ payload }: ReturnType<typeof signInRequest>) {
       password,
     });
 
-    console.tron.log(response.data);
-
     const { token } = response.data;
 
     api.defaults.headers.Authorization = `Bearer ${token} `;
@@ -34,24 +32,11 @@ export function* signIn({ payload }: ReturnType<typeof signInRequest>) {
   }
 }
 
-export function setToken(payload: Authorization) {
-  if (!payload) {
-    return;
-  }
-
-  const { token } = payload;
-
-  if (token) {
-    api.defaults.headers.Authorization = `Bearer ${token} `;
-  }
-}
-
 export function signOut() {
   history.push('/');
 }
 
 export default all([
-  // takeLatest('persist/REHYDRATE', setToken),
   takeLatest(AuthTypes.SIGN_IN_REQUEST, signIn),
   takeLatest(AuthTypes.SIGN_OUT, signOut),
 ]);

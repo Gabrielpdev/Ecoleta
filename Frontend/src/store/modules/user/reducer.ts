@@ -4,11 +4,10 @@ import { AuthTypes } from '../auth/types';
 
 const INITIAL_SATE: UserState = {
   profile: {
+    id: 0,
     name: '',
     email: '',
-    password: '',
     is_admin: false,
-    oldPassword: '',
   },
 };
 
@@ -19,11 +18,11 @@ const reducer: Reducer<UserState> = (state = INITIAL_SATE, action) => {
     }
     case UserTypes.UPDATE_PROFILE_SUCCESS: {
       return {
-        ...state, profile: action.payload.profile,
+        ...state, profile: action.payload,
       };
     }
     case AuthTypes.SIGN_OUT: {
-      return { ...state, profile: {} };
+      return { ...state, profile: undefined };
     }
     default:
       return state;

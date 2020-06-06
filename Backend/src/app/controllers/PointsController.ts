@@ -71,7 +71,6 @@ class PointsController {
 
   async create (request:Request, response:Response )  {
     const {
-      image,
       name,
       email,
       whatsapp,
@@ -119,6 +118,19 @@ class PointsController {
     });
   }
 
+  async destroy(request:Request, response:Response){
+    const { id } = request.params;
+
+    const checkPoint = await knex('points').where('id', id).first();
+
+    if(!checkPoint){
+      return response.status(400).json({ error: 'Point not exist' });
+    }
+
+    await knex('points').where('id', id).del()
+
+    return response.json({ message: 'Point deleted'});
+  }
 }
 
 export default PointsController;

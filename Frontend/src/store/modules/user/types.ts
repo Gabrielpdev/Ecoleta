@@ -11,22 +11,20 @@ export enum UserTypes{
 // Data type
 
 export interface Profile {
+  id: number,
   name: string,
   email: string,
-  password: string,
   is_admin: boolean,
-  oldPassword: string,
 }
 
 
 export interface User{
-  data: {
-    name: string,
-    email: string,
-    password: string,
-    oldPassword: string,
-  },
-  profile: Profile,
+  name: string,
+  email: string,
+  is_admin: boolean,
+  oldPassword: string,
+  password: string,
+  confirmPassword: string,
 }
 
 // State type

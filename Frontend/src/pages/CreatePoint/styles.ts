@@ -12,45 +12,9 @@ export const Container = styled.div`
 
   margin: 0 auto;
 
-button {
-  border:0;
-  color: #000;
-  font-size: 20px;
-  display: flex;
-  align-items:center;
-  justify-content: center;
-  padding: 5px;
-}
-
-svg {
-  margin-left: 10px;
-}
-
-header {
-  margin-top: 48px;
-
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-header a {
-  color: var(--title-color);
-  font-weight: bold;
-  text-decoration: none;
-
-  display: flex;
-  align-items: center;
-}
-
-header a svg {
-  margin-right: 16px;
-  color: var(--primary-color);
-}
-
 form {
   margin: 80px auto;
-  padding: 64px;
+  padding: 32px 64px 64px 64px;
   max-width: 730px;
   background: #FFF;
   border-radius: 8px;
@@ -164,6 +128,23 @@ form .leaflet-container {
   height: 350px;
   border-radius: 8px;
   margin-bottom: 24px;
+}
+
+form >button.back{
+  background: none;
+  padding:0;
+  color: #2FB86E;
+  display: flex;
+  align-items:center;
+  margin: 0 auto 10px 0;
+  font-size: 18px;
+
+  width: 190px;
+  height: 40px;
+  &:hover {
+    background: none;
+  }
+
 }
 
 form button {

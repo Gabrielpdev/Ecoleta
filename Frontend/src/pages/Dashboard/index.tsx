@@ -1,22 +1,19 @@
+/* eslint-disable camelcase */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { FiLogOut, FiPlus } from 'react-icons/fi';
-import { Link } from 'react-router-dom';
+import { FiPlus } from 'react-icons/fi';
 
+import Header from '../../components/Header';
 import { Container, Content } from './styles';
-import logo from '../../assets/logo.svg';
-
-import { signOut } from '../../store/modules/auth/actions';
 
 import api from '../../services/api';
 import history from '../../services/history';
 
 import { store } from '../../store';
 
-
 interface Point {
+  image_url:string;
   point: {
     id: number;
     image:string;
@@ -31,9 +28,7 @@ interface Point {
   }[]
 }
 
-const Home = () => {
-  const dispatch = useDispatch();
-
+const Dashboard = () => {
   const [points, setPoints] = useState<Point[]>([]);
 
   const { profile } = store.getState().user;
@@ -47,27 +42,13 @@ const Home = () => {
     loadPoints();
   }, []);
 
-  function handleLogOut() {
-    dispatch(signOut());
-  }
-
   function handleNavigateToPointer(id: number) {
     history.push(`create-pointer/${id}`);
   }
 
   return (
     <Container>
-      <header>
-        <img src={logo} alt="ecoleta" />
-        <div className="profile">
-          <strong>{profile.name}</strong>
-          <Link to="/profile">Meu Perfil</Link>
-        </div>
-        <button className="logout" type="button" onClick={handleLogOut}>
-          Sair
-          <FiLogOut color="#2FB86E" size={30} />
-        </button>
-      </header>
+      <Header profile={profile} />
 
       <button type="button" className="add" onClick={() => history.push('/create-point')}>
         <FiPlus color="#fff" size={30} />
@@ -77,7 +58,7 @@ const Home = () => {
       {points.map((point) => (
         <Content key={point.point.id} onClick={() => handleNavigateToPointer(point.point.id)}>
           <div className="image">
-            <img src={point.point.image} alt="" />
+            <img src={point.image_url} alt="" />
           </div>
 
           <div className="description">
@@ -113,4 +94,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Dashboard;
