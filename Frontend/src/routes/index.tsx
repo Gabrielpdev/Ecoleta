@@ -15,9 +15,13 @@ const Routes = () => (
     <Route component={Home} path="/" exact />
     <Route component={Dashboard} path="/dashboard" isPrivate />
     <Route component={Users} path="/users" isPrivate />
-    <Route component={CreatePoint} path="/create-point" isPrivate />
-    <Route component={Profile} path="/profile/:id" isPrivate />
+
+    <Route component={CreatePoint} path="/create-point" exact isPrivate />
+    <Route component={CreatePoint} path="/create-point/:id" isPrivate />
+
     <Route component={Profile} path="/profile" exact isPrivate />
+    <Route component={Profile} path="/profile/:id" isPrivate />
+
     <Route component={AddUser} path="/add-user" exact isPrivate />
   </Switch>
 );

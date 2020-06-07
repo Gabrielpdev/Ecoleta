@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
@@ -7,11 +8,12 @@
 import React, {
   useEffect, useState, ChangeEvent, FormEvent,
 } from 'react';
-import { useHistory } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { useParams, useHistory } from 'react-router-dom';
 import { Marker, TileLayer } from 'react-leaflet';
 import { LeafletMouseEvent } from 'leaflet';
 import { FiArrowLeft } from 'react-icons/fi';
-import { IoMdCheckmarkCircleOutline } from 'react-icons/io';
+import { IoMdCheckmarkCircleOutline, IoMdRemoveCircleOutline } from 'react-icons/io';
 
 import axios from 'axios';
 import api from '../../services/api';
@@ -19,7 +21,9 @@ import api from '../../services/api';
 import Header from '../../components/Header';
 import Dropzone from '../../components/Dropzone';
 
-import { Container, Concluido, Mapa } from './styles';
+import {
+  Container, Concluido, Mapa, Erro,
+} from './styles';
 import { store } from '../../store';
 
 
@@ -41,13 +45,13 @@ const CreatePoint = () => {
   const { profile } = store.getState().user;
   const { token } = store.getState().auth;
 
+  const { id } = useParams();
+
   const [itens, setItens] = useState<Item[]>([]);
 
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    whatsapp: '',
-  });
+  const [name, setName] = useState<string>();
+  const [email, setEmail] = useState<string>();
+  const [whatsapp, setWhatsapp] = useState<string>();
 
   const [position, setPosition] = useState<[number, number]>([0, 0]);
 
@@ -58,8 +62,10 @@ const CreatePoint = () => {
   const [selectedCity, setselectedCity] = useState('0');
   const [selectedItens, setSelectedItens] = useState<number[]>([]);
   const [selectedFile, setSelectedFile] = useState<File>();
+  const [selectedImage, setSelectedImage] = useState<string>();
 
-  const [messageFinish, setMessageFinish] = useState(true);
+  const [messageOK, setMessageOK] = useState(true);
+  const [messageError, setMessageError] = useState(true);
 
   const history = useHistory();
 
@@ -72,12 +78,14 @@ const CreatePoint = () => {
   }, [token]);
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition((position) => {
-      const { latitude, longitude } = position.coords;
+    if (!id) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        const { latitude, longitude } = position.coords;
 
-      setPosition([latitude, longitude]);
-    });
-  }, []);
+        setPosition([latitude, longitude]);
+      });
+    }
+  }, [id]);
 
   useEffect(() => {
     api.get('itens').then((response) => {
@@ -103,6 +111,26 @@ const CreatePoint = () => {
       });
   }, [selectedUf]);
 
+  useEffect(() => {
+    async function loadPoint() {
+      const { data } = await api.get(`/points/${id}`);
+      setSelectedImage(data.point.image_url);
+      setName(data.point.name);
+      setEmail(data.point.email);
+      setWhatsapp(data.point.whatsapp);
+      setPosition([data.point.latitude, data.point.longitude]);
+      setselectedUf(data.point.uf);
+      setselectedCity(data.point.city);
+
+      const itensID: number[] = [];
+      data.itens.map((item: Item) => {
+        itensID.push(item.id);
+      });
+      setSelectedItens(itensID);
+    }
+    loadPoint();
+  }, [id, selectedFile]);
+
   function handleSelectedUf(event: ChangeEvent<HTMLSelectElement>) {
     const uf = event.target.value;
 
@@ -122,15 +150,6 @@ const CreatePoint = () => {
     ]);
   }
 
-  function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
-    const { name, value } = event.target;
-
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  }
-
   function handleSelectItem(id: number) {
     const alreadySelected = selectedItens.findIndex((item) => item === id);
 
@@ -146,7 +165,7 @@ const CreatePoint = () => {
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
 
-    const { name, email, whatsapp } = formData;
+
     const uf = selectedUf;
     const city = selectedCity;
     const [latitude, longitude] = position;
@@ -154,9 +173,9 @@ const CreatePoint = () => {
 
     const data = new FormData();
 
-    data.append('name', name);
-    data.append('email', email);
-    data.append('whatsapp', whatsapp);
+    data.append('name', String(name));
+    data.append('email', String(email));
+    data.append('whatsapp', String(whatsapp));
     data.append('uf', uf);
     data.append('city', city);
     data.append('latitude', String(latitude));
@@ -165,21 +184,28 @@ const CreatePoint = () => {
 
     if (selectedFile) {
       data.append('image', selectedFile);
+    } else {
+      toast.error('Imagem não selecionada, selecione o arquivo.');
     }
 
-    await api.post('points', data);
+    try {
+      if (id) {
+        await api.put(`points/${id}`, data);
+      } else {
+        await api.post('points', data);
+      }
 
-
-    setMessageFinish(false);
-
-    setTimeout(() => history.push('/dashboard'), 3000);
+      setMessageOK(false);
+      setTimeout(() => history.push('/dashboard'), 3000);
+    } catch (err) {
+      setMessageError(false);
+      setTimeout(() => setMessageError(true), 3000);
+    }
   }
-
 
   return (
     <Container>
       <Header profile={profile} />
-
 
       <form onSubmit={handleSubmit}>
         <button type="button" className="back" onClick={() => history.push('/dashboard')}>
@@ -187,10 +213,13 @@ const CreatePoint = () => {
           Voltar
         </button>
         <h1>
-          Cadastro do ponto de coleta
+          {id ? 'Atualizando ponto de coleta' : 'Cadastro do ponto de coleta'}
         </h1>
 
-        <Dropzone onFileUploaded={setSelectedFile} />
+        <Dropzone
+          onFileUploaded={setSelectedFile}
+          defaultFile={id ? String(selectedImage) : undefined}
+        />
 
         <fieldset>
           <legend>
@@ -203,7 +232,8 @@ const CreatePoint = () => {
               type="text"
               name="name"
               id="name"
-              onChange={handleInputChange}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
             />
           </div>
 
@@ -214,7 +244,8 @@ const CreatePoint = () => {
                 type="text"
                 name="email"
                 id="email"
-                onChange={handleInputChange}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <div className="field">
@@ -222,8 +253,9 @@ const CreatePoint = () => {
               <input
                 type="text"
                 name="whatsapp"
-                id="whatsapp  "
-                onChange={handleInputChange}
+                id="whatsapp"
+                value={whatsapp}
+                onChange={(e) => setWhatsapp(e.target.value)}
               />
             </div>
           </div>
@@ -236,7 +268,12 @@ const CreatePoint = () => {
           </legend>
 
           <div className="mapa">
-            <Mapa center={position} zoom={15} onclick={handleMapClick} visible={messageFinish}>
+            <Mapa
+              center={position}
+              zoom={15}
+              onclick={handleMapClick}
+              visible={messageOK || messageError}
+            >
               <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
@@ -302,10 +339,14 @@ const CreatePoint = () => {
         <button type="submit">Cadastrar ponto de coleta</button>
       </form>
 
-      <Concluido visible={!messageFinish}>
+      <Concluido visible={!messageOK}>
         <IoMdCheckmarkCircleOutline color="#2FB86E" size={60} />
         Cadastro Concluido!
       </Concluido>
+      <Erro visible={!messageError}>
+        <IoMdRemoveCircleOutline color="#990000" size={60} />
+        Erro no Cadastro! Verifique seus dados.
+      </Erro>
     </Container>
   );
 };

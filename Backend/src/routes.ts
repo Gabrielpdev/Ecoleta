@@ -1,5 +1,4 @@
 import express from 'express';
-import { celebrate, Joi } from 'celebrate';
 
 import multer from 'multer';
 import multerConfig from './config/multer';
@@ -27,29 +26,10 @@ routes.get('/itens',itemController.index);
 routes.get('/points/:id',pointController.show );
 routes.get('/points',pointController.index );
 
-routes.post(
-  '/points',
-  upload.single('image'),
-  celebrate({
-    body: Joi.object().keys({
-      name: Joi.string().required(),
-      email: Joi.string().required(),
-      whatsapp: Joi.number().required(),
-      latitude: Joi.number().required(),
-      longitude: Joi.number().required(),
-      city: Joi.string().required(),
-      uf: Joi.string().max(2).required(),
-      itens: Joi.string().required(),
-    })
-  },{
-    abortEarly: false,
-  }),
-  authMiddleware,
-  pointController.create 
-   );
-
+routes.post('/points',upload.single('image'),authMiddleware,pointController.create);
+routes.put('/points/:id',upload.single('image'),authMiddleware,pointController.update);
 routes.delete('/points/:id',authMiddleware, permissionMiddleware, pointController.destroy);
-   
+
 routes.put('/users/:id',authMiddleware,userController.update);
 routes.post('/users', authMiddleware, permissionMiddleware,userController.create);
 routes.delete('/users/:id',authMiddleware, permissionMiddleware, userController.destroy);

@@ -231,3 +231,24 @@ export const Concluido = styled.div`
   background: #000;
 
 `;
+
+export const Erro = styled.div`
+ visibility: ${(props: YourProps) => (props.visible ? 'visible' : 'hidden')};
+
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  color: #FFF;
+  font-weight: bold;
+  font-size: 40px;
+
+  background: #000;
+`;

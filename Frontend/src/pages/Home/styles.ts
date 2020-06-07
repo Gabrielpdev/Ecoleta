@@ -4,7 +4,7 @@ import imageBackground from '../../assets/home-background.svg';
 export const Container = styled.div`
 height: 100vh;
 display: fixed;
-background: url(${imageBackground}) no-repeat 500px bottom;
+background: url(${imageBackground}) no-repeat 90% bottom;
 
 .content {
   width: 100%;

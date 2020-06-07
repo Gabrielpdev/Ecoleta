@@ -45,57 +45,90 @@ export const Content = styled.div`
   min-inline-size: auto;
 
   display: flex;
-  align-items: center;
   justify-content:space-between;
   flex-direction: row;
 
   color: #322153;
 
-  cursor:pointer;
+  div.clicker{
+    width: 800px;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content:space-between;
+    flex-direction: row;
 
-  & + & {
-    margin-top: 25px;
-  }
+    cursor: pointer;
 
-  &:last-child {
-    margin-bottom: 64px;
-  }
-
-  &:hover{
-    opacity: 0.75;
-  }
-
-  div.description {
-    margin-left: 40px;
-    display:flex;
-    align-content:center;
-    flex-direction: column;
-    padding: 20px;
-
-    >strong {
-      font-size: 33px;
+    & + & {
+      margin-top: 25px;
     }
 
-    >span {
-      font-weight:bold;
-      font-size: 18px;
+    &:last-child {
+      margin-bottom: 64px;
+    }
+
+    &:hover{
+      opacity: 0.7;
+    }
+
+
+    div.description {
+      margin-left: 40px;
+      display:flex;
+      align-content:center;
+      flex-direction: column;
+      padding: 20px;
+
+      >strong {
+        font-size: 33px;
+      }
+
+      >span {
+        font-weight:bold;
+        font-size: 18px;
+      }
+    }
+
+    div.permition {
+      background: #E1FAEC;
+      border: 2px solid #34CB79;
+      border-radius:30px;
+
+      height: 60px;
+      margin-right: 40px;
+
+      display:flex;
+      align-items:center;
+
+      padding: 20px;
+      >li {
+        font-size: 17px;
+      }
     }
   }
 
-  div.permition {
-    background: #E1FAEC;
-    border: 2px solid #34CB79;
-    border-radius:30px;
+  div.delete{
+    margin: 10px 20px 0 0;
 
-    height: 60px;
-    margin-right: 40px;
+    div.circle {
+      display: flex;
+      align-items:center;
+      justify-content: center;
+      background: #DEA2A2;
+      border: 2px solid #ED0000;
 
-    display:flex;
-    align-items:center;
 
-    padding: 20px;
-    >li {
-      font-size: 17px;
+      padding: 5px;
+      width: 30px;
+      height: 30px;
+      border-radius: 15px;
+
+      cursor: pointer;
+
+      &:hover{
+        opacity: 0.7;
+      }
     }
   }
 `;

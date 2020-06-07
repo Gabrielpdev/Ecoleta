@@ -47,6 +47,7 @@ const Profile: React.FC = () => {
       const response = await api.get(`users/${id}`);
       setUserName(response.data.name);
       setEmail(response.data.email);
+      setSelectedPermition(response.data.is_admin);
     }
 
     loadUser();
@@ -70,8 +71,6 @@ const Profile: React.FC = () => {
       } else {
         permition = true;
       }
-
-      console.tron.log(permition);
 
       if (Number(id) === profile.id) {
         const confirmDelete = window.confirm(

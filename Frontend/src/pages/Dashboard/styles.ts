@@ -34,7 +34,6 @@ export const Container = styled.div`
 `;
 
 export const Content = styled.div`
-
   background: #fff;
   border: 2px solid #34CB79;
 
@@ -45,24 +44,55 @@ export const Content = styled.div`
   min-inline-size: auto;
 
   display: flex;
-  align-items: center;
   justify-content:space-between;
   flex-direction: row;
 
-  color: #322153;
+  div.clicker{
+    width: 800px;
+    margin: 0;
+    color: #322153;
+    display: flex;
+    align-items: center;
+    justify-content:space-between;
+    flex-direction: row;
 
-  cursor: pointer;
+    cursor: pointer;
 
-  & + & {
-    margin-top: 25px;
+    & + & {
+      margin-top: 25px;
+    }
+
+    &:last-child {
+      margin-bottom: 64px;
+    }
+
+    &:hover{
+      opacity: 0.7;
+    }
   }
 
-  &:last-child {
-    margin-bottom: 64px;
-  }
+  div.delete{
+    margin: 20px 20px 0 0;
 
-  &:hover{
-    opacity: 0.7;
+    div.circle {
+      display: flex;
+      align-items:center;
+      justify-content: center;
+      background: #DEA2A2;
+      border: 2px solid #ED0000;
+
+
+      padding: 5px;
+      width: 40px;
+      height: 40px;
+      border-radius: 20px;
+
+      cursor: pointer;
+
+      &:hover{
+        opacity: 0.7;
+      }
+    }
   }
 
   div.image {
@@ -103,13 +133,11 @@ export const Content = styled.div`
 
     border-radius:30px;
 
-    width: 30%;
+    min-width: 30%;
     height: 150px;
 
     display:flex;
     flex-direction: column;
-
-    margin-right: 10px;
 
     padding: 20px;
     >li {
