@@ -81,15 +81,15 @@ Usuário administrador padrão: ecoleta@admin.com / 123456
 ### 🧰  Ferramentas utilizadas
 
 As seguintes ferramentas foram usadas na construção do projeto:
-- 🔵[TypeScript][typescript]
-- 🟢[Node.js][nodejs]
-- ❄️[Knex][knex]
-- ⚛️[React][reactjs]
-- ⚛️[React Native][rn]
-- 🔼[Expo][expo]
-- 💅 [styled-components]
-- 🔁 [redux]
-- 🔂 [redux-saga]
+- 🔵 [TypeScript][typescript]
+- 🟢 [Node.js][nodejs]
+- ❄️ [Knex][knex]
+- ⚛️ [React][reactjs]
+- ⚛️ [React Native][rn]
+- 🔼 [Expo][expo]
+- 💅 [Styled-components]
+- 🔁 [Redux]
+- 🔂 [Redux-saga]
 
 ## 📝 Licença
 
