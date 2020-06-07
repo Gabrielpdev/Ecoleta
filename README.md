@@ -32,7 +32,7 @@
 
 
 
-Projeto desenvolvido durante a **NLW - Next Level Week** oferecida pela [Rocketseat](rs).
+Projeto desenvolvido durante a **NLW - Next Level Week** oferecida pela [Rocketseat].
 O NLW é uma experiência online com muito conteúdo prático.
 
 <h1 align="center">
@@ -41,8 +41,8 @@ O NLW é uma experiência online com muito conteúdo prático.
 
 <h1 align="center">
   <p align="center">
-    <img src='./github/web.gif' height="300" >
-    <img src="./github/mobile.gif" height="300" >
+    <img src='.github/web.gif' height="300" >
+    <img src=".github/mobile.gif" height="300" >
   </p>
 </h1>
 
