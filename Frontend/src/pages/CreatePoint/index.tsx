@@ -150,6 +150,8 @@ const CreatePoint = () => {
     ]);
   }
 
+  console.log(position)
+
   function handleSelectItem(id: number) {
     const alreadySelected = selectedItens.findIndex((item) => item === id);
 

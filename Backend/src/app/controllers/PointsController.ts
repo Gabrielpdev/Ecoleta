@@ -12,8 +12,6 @@ class PointsController {
         const point = await knex('points')
         .distinct();
 
-        
-
         const points = []
         for (var i = 0; i < point.length; i++) {
           const items = await knex('itens')
@@ -43,8 +41,15 @@ class PointsController {
       .where('uf', String(uf))
       .distinct()
       .select('points.*')
+
+      const serializedPoints = points.map(point => {
+        return {
+          ...point,
+          image_url: `http://192.168.0.101:3333/uploads/${point.image}`,
+        }
+      }) 
       
-      return response.json(points)
+      return response.json(serializedPoints)
     }
   }
 
@@ -108,8 +113,6 @@ class PointsController {
       city,
       uf,
     }
-
-    console.log(request.file);
 
     const insertedIds = await trx('points').insert(point);
 

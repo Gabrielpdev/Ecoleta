@@ -47,6 +47,7 @@ const Home = () => {
     })
   }
 
+
   return(
     <ImageBackground 
     source={require('../../assets/home-background.png')} 
@@ -61,15 +62,17 @@ const Home = () => {
 
       <View style={styles.footer} > 
       <RNPickerSelect
+        placeholder={{ label: 'Selecione uma UF', value:null}}
         onValueChange={(value) => setselectedUf(value)}
         items={ufs.map( uf => (
-          { label: String(uf), value:String(uf)}
+          { label: String(uf), value:String(uf), key:String(uf)}
         ))}
       />
       <RNPickerSelect
+        placeholder={{ label: 'Selecione uma cidade', value:null}}
         onValueChange={(value) => setselectedCity(value)}
-        items={citys.map( city => (
-          { label: String(city), value:String(city)}
+        items={citys.map( city => ( 
+          { label: String(city), value:String(city), key:String(city)}
         ))}
       />
         <RectButton style={styles.button} onPress={handleNavigation}>

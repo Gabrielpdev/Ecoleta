@@ -27,7 +27,7 @@ const RouteWrapper = ({
   }
 
   if (signed && !isPrivate) {
-    return <Redirect to="/create-point" />;
+    return <Redirect to="/dashboard" />;
   }
 
   return (
