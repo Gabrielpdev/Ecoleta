@@ -1,8 +1,12 @@
-<h4 align="center"> 
-🚧 NextLevelWeek 1.0 🚀 em construção... 🚧
-</h1>
-<h2 align="center"> 
+<h2 align="center">
+    <img alt="NextLevelWeek" title="#NextLevelWeek" src=".github/logo.svg" width="250px" />
+</h2>
+
+<h1 align="center"> 
 	♻ Ecoleta
+	<h3 align="center">
+	NextLevelWeek 1.0 🚀
+	</h3>
 </h1>
 
 <p align="center">
@@ -26,8 +30,21 @@
   </a>
 </p>
 
+
+
 Projeto desenvolvido durante a **NLW - Next Level Week** oferecida pela [Rocketseat](rs).
 O NLW é uma experiência online com muito conteúdo prático.
+
+<h1 align="center">
+    <img alt="Capa" title="Capa" src=".github/capa.svg" width="500px" />
+</h1>
+
+<h1 align="center">
+  <p align="center">
+    <img src='./github/web.gif' height="300" >
+    <img src="./github/mobile.gif" height="300" >
+  </p>
+</h1>
 
 ### 📜 Sobre
 O Ecoleta serve como um Marketplace, uma conexão entre empresas ou entidade que coletam resíduos, à pessoas que precisam fazer descarte dos resíduos. Construído com as tecnologias mais populares do mundo Javascript, este repositório contem uma API REST (Node.js) como backend, uma aplicação em ReactJS como frontend e um app mobile em React Native.
@@ -54,16 +71,25 @@ A aplicação em **React Native** é para qualquer usuário, que verá os ponto 
 2. ``yarn``
 3. ``yarn start``
 
+Usuário administrador padrão: ecoleta@admin.com / 123456
+
+### 📱Iniciando com o Mobile
+1. ``cd mobile``
+2. ``yarn``
+3. ``yarn start``
+
 ### 🧰  Ferramentas utilizadas
 
 As seguintes ferramentas foram usadas na construção do projeto:
-- [TypeScript][typescript]
-- [Node.js][nodejs]
-- [Knex][knex]
-- [React][reactjs]
-- [React Native][rn]
-- [Expo][expo]
-
+- 🔵[TypeScript][typescript]
+- 🟢[Node.js][nodejs]
+- ❄️[Knex][knex]
+- ⚛️[React][reactjs]
+- ⚛️[React Native][rn]
+- 🔼[Expo][expo]
+- 💅 [styled-components]
+- 🔁 [redux]
+- 🔂 [redux-saga]
 
 ## 📝 Licença
 
@@ -79,3 +105,7 @@ Feito com ❤️ por Gabriel Pereira 👋🏽 [Entre em contato!](https://www.li
 [license]: https://opensource.org/licenses/MIT
 [rs]: https://rocketseat.com.br
 [knex]:http://knexjs.org/
+[Rocketseat]:https://github.com/Rocketseat
+[styled-components]:https://styled-components.com/
+[redux]:https://redux.js.org/
+[redux-saga]:https://redux-saga.js.org/
